@@ -1,0 +1,216 @@
+<t t-name="your_module.menu_order_template">
+  <t t-call="website.layout">
+
+    <!-- ================= HERO BANNER ================= -->
+    <section style="         background:url('https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg') center/cover no-repeat;         height:45vh; display:flex; justify-content:center; align-items:center;         text-align:center; padding:20px;">
+        <h1 style="color:white; font-size:40px; font-weight:700; text-shadow:0 3px 8px rgba(0,0,0,0.7);">
+            Discover Amazing Meals
+        </h1>
+    </section>
+
+    <!-- ================= MENU SECTION ================= -->
+    <div id="menuSection">
+
+      <section class="menu-section">
+        <h2 style="color:#333;">Savor the Best Flavors, Freshly Prepared</h2>
+
+        <div class="menu-container">
+
+          <!-- ===== CARD 1 ===== -->
+          <div class="menu-card">
+            <img src="/web/image/website/1/image" alt="Food 1"/>
+            <div class="menu-info">
+              <p class="menu-name">Chicken Pilau</p>
+              <p class="menu-price">12000 USh</p>
+              <button class="order-btn" data-name="Chicken Pilau" data-price="12000" data-desc="Delicious chicken pilau dish" data-img="/web/image/website/1/image">
+                Order Now
+              </button>
+            </div>
+          </div>
+
+          <!-- ===== CARD 2 ===== -->
+          <div class="menu-card">
+            <img src="/web/image/website/2/image" alt="Food 2"/>
+            <div class="menu-info">
+              <p class="menu-name">Beef Pilau</p>
+              <p class="menu-price">14000 USh</p>
+              <button class="order-btn" data-name="Beef Pilau" data-price="14000" data-desc="Best beef pilau" data-img="/web/image/website/2/image">
+                Order Now
+              </button>
+            </div>
+          </div>
+
+          <!-- Duplicate more cards as needed -->
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ================= PRODUCT PAGE ================= -->
+    <div id="productSection" style="display:none;">
+
+      <div class="product-wrapper">
+
+        <div class="left-side">
+          <img id="productImg" class="product-img" src="" alt="Product Image"/>
+        </div>
+
+        <div class="right-side">
+          <p id="productName" class="product-name">Product Name</p>
+          <p id="productDesc" class="product-desc">Description</p>
+
+          <p id="productPrice" class="product-price">0 USh</p>
+
+          <button id="orderNowBtn" class="order-btn">🛒 Order</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= CONFIRM ORDER ================= -->
+    <div id="confirmSection" style="display:none;">
+      <header>Confirm Order</header>
+
+      <div class="summary">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="cartItems"/>
+        </table>
+
+        <h3>Total: <span id="totalAmount">0</span> USh</h3>
+
+        <button id="continueBtn" class="order-btn" style="background:green;">Continue Ordering</button>
+      </div>
+    </div>
+
+    <!-- ================= CSS ================= -->
+    <style t-css-inline="true">
+      .menu-section { padding:50px; text-align:center; }
+      .menu-container {
+        display:flex; flex-wrap:wrap; justify-content:center;
+        gap:24px;
+      }
+      .menu-card {
+        width:260px;
+        background:#fff;
+        border-radius:16px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        overflow:hidden;
+        cursor:pointer;
+      }
+      .menu-card img {
+        width:100%;
+        height:200px;
+        object-fit:cover;
+      }
+      .menu-info { padding:16px; }
+      .menu-name { font-size:20px; font-weight:600; }
+      .menu-price { color:#ff7f00; margin:10px 0; }
+
+      .order-btn {
+        background:#ff7f00; color:#fff;
+        border:none; padding:10px 16px;
+        border-radius:8px;
+        cursor:pointer;
+      }
+
+      /* PRODUCT PAGE */
+      .product-wrapper { 
+        max-width:900px; margin:50px auto; 
+        display:flex; gap:24px;
+      }
+      .product-img {
+        width:100%; max-width:450px;
+        object-fit:contain;
+      }
+      .product-name{ font-size:32px; }
+      .product-price{ font-size:28px; color:#ff7f00; }
+    </style>
+
+    <!-- ================= JS ================= -->
+    <script t-js-inline="true">
+      const menuSection = document.getElementById("menuSection");
+      const productSection = document.getElementById("productSection");
+      const confirmSection = document.getElementById("confirmSection");
+
+      function showMenu(){ menuSection.style.display="block"; productSection.style.display="none"; confirmSection.style.display="none"; }
+      function showProduct(){ menuSection.style.display="none"; productSection.style.display="block"; }
+      function showConfirm(){ menuSection.style.display="none"; productSection.style.display="none"; confirmSection.style.display="block"; }
+
+      /* ===== MENU -&gt; PRODUCT ===== */
+      document.querySelectorAll(".order-btn").forEach(btn=&gt;{
+        btn.addEventListener("click",()=&gt;{
+          const product = {
+            name: btn.dataset.name,
+            price: btn.dataset.price,
+            desc: btn.dataset.desc || "",
+            img: btn.dataset.img
+          };
+          localStorage.setItem("selectedProduct", JSON.stringify(product));
+          loadProduct();
+          showProduct();
+        });
+      });
+
+      /* ===== LOAD PRODUCT ===== */
+      function loadProduct(){
+        const p = JSON.parse(localStorage.getItem("selectedProduct"));
+        if(!p) return;
+
+        document.getElementById("productName").innerText = p.name;
+        document.getElementById("productPrice").innerText = p.price + " USh";
+        document.getElementById("productImg").src = p.img;
+        document.getElementById("productDesc").innerText = p.desc;
+      }
+
+      /* ===== PRODUCT -&gt; CONFIRM ===== */
+      document.getElementById("orderNowBtn").onclick = () =&gt;{
+        const p = JSON.parse(localStorage.getItem("selectedProduct"));
+        const cart = [{
+          name:p.name, price:p.price, qty:1
+        }];
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadConfirm();
+        showConfirm();
+      };
+
+      function loadConfirm(){
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const body = document.getElementById("cartItems");
+        body.innerHTML="";
+        let total=0;
+
+        cart.forEach(c=&gt;{
+          let subtotal = c.price * c.qty;
+          total += subtotal;
+          body.innerHTML += `
+            <tr>
+              <td>${c.name}</td>
+              <td>${c.price} USh</td>
+              <td>${c.qty}</td>
+              <td>${subtotal} USh</td>
+            </tr>
+          `;
+        });
+
+        document.getElementById("totalAmount").innerText = total;
+      }
+
+      document.getElementById("continueBtn").onclick = showMenu;
+
+      /* AUTO LOAD WHEN PAGE REFRESH */
+      if(localStorage.getItem("selectedProduct")){
+        loadProduct();
+      }
+    </script>
+
+  </t>
+</t>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Page</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #fff5eb;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .menu-section { padding: 60px 0; }
+    .menu-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 24px;
+      padding: 20px;
+    }
+
+    .menu-card {
+      width: 270px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    }
+
+    .menu-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .menu-info { padding: 20px; }
+    .menu-name { font-size: 22px; font-weight: 600; color: #222; }
+    .menu-price { font-size: 18px; color: #ff6600; margin: 10px 0; }
+
+    .order-btn {
+      background: #ff7f00;
+      color: #fff;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 28px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .order-btn:hover { background: #ff6000; }
+
+    @media (max-width: 768px) {
+      .menu-container { flex-direction: column; align-items: center; }
+      .menu-card { width: 85%; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="menu-section">
+  <h2 style="color:#333;">Savor the Best Flavors, Freshly Prepared</h2>
+  <div class="menu-container">
+
+    <div class="menu-card">
+      <img src="https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7" alt="Plain G.nuts">
+      <div class="menu-info">
+        <p class="menu-name">Plain G.nuts</p>
+        <p class="menu-price">8000.0 USh</p>
+        <button class="order-btn" onclick="openFood({name:'Plain G.nuts', price:8000, img:'https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7'})">Order Now</button>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <img src="https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7" alt="Beef">
+      <div class="menu-info">
+        <p class="menu-name">Beef</p>
+        <p class="menu-price">10000.0 USh</p>
+        <button class="order-btn" onclick="openFood({name:'Beef', price:10000, img:'https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7'})">Order Now</button>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <img src="https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7" alt="Beef Pilau">
+      <div class="menu-info">
+        <p class="menu-name">Beef Pilau</p>
+        <p class="menu-price">12000.0 USh</p>
+        <button class="order-btn" onclick="openFood({name:'Beef Pilau', price:12000, img:'https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7', desc:'Sweet one for me'})">Order Now</button>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <img src="https://address-restaurant.odoo.com/web/image/product.template/36/image_512?unique=3156dc7" alt="Chicken Pilau">
+      <div class="menu-info">
+        <p class="menu-name">Chicken Pilau</p>
+        <p class="menu-price">13000.0 USh</p>
+        <button class="order-btn" onclick="openFood({name:'Chicken Pilau', price:13000, img:'https://address-restaurant.odoo.com/web/image/product.template/36/image_512?unique=3156dc7', desc:'sweet Matooke best for your family'})">Order Now</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  function openFood(product){
+    // Store the clicked product in localStorage
+    localStorage.setItem('selectedProduct', JSON.stringify(product));
+    // Redirect to the single product page
+    window.location.href = 'product.html';
+  }
+</script>
+
+</body>
+</html>

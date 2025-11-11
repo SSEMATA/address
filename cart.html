@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart Summary</title>
+<style>
+body { font-family:"Poppins", sans-serif; background:#fff7f0; margin:0; padding:0; color:#222; }
+header { background:#ff7f00; color:white; text-align:center; padding:20px 0; font-size:24px; font-weight:600; }
+.cart-container { max-width:1000px; margin:40px auto; padding:0 10px; }
+.table-wrapper { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.1); min-width:700px; }
+th, td { text-align:center; padding:10px 6px; border-bottom:1px solid #e8e4df; vertical-align:middle; word-wrap:break-word; }
+th { background:#ff7f00; color:white; white-space:nowrap; }
+img { border-radius:8px; width:60px; height:60px; object-fit:cover; }
+.extras-list { display:flex; flex-wrap:wrap; justify-content:center; gap:4px; font-size:13px; color:#555; max-width:150px; margin:0 auto; word-break:break-word; }
+.cart-summary { text-align:right; margin-top:20px; font-size:20px; }
+.cart-actions { text-align:right; margin-top:10px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap; }
+.cart-actions button { padding:10px 20px; font-size:16px; background:#ff7f00; color:white; border:none; border-radius:8px; cursor:pointer; }
+.qty-btn, .delete-btn { cursor:pointer; padding:4px 10px; font-size:16px; border:none; border-radius:6px; background-color:#ffb366; color:white; margin:0 2px; }
+.delete-btn { background-color:#ff4d4d; }
+@media(max-width:768px){ th,td{ font-size:13px; padding:6px 4px; } .cart-summary{ font-size:18px; } .cart-actions button{ font-size:14px; padding:8px 16px; } .extras-list{ max-width:100px; font-size:12px; } }
+</style>
+</head>
+<body>
+
+<header>Your Cart Summary</header>
+
+<div class="cart-container">
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product</th>
+          <th>Extras</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="cartItems"></tbody>
+    </table>
+  </div>
+
+  <div class="cart-summary">
+    <h3 id="cartTotal">Total: 0 USh</h3>
+    <div class="cart-actions">
+      <button onclick="window.location.href='index.html'">Continue Ordering</button>
+      <button onclick="goToConfirmOrder()">Place Order</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const cartItems = document.getElementById("cartItems");
+const cartTotal = document.getElementById("cartTotal");
+
+function renderCart() {
+  cartItems.innerHTML = "";
+  let total = 0;
+  cart.forEach((item, index) => {
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
+    const extrasText = item.extras && item.extras.length 
+      ? `<div class="extras-list">${item.extras.join(", ")}</div>` 
+      : "None";
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><img src="${item.image}" alt="${item.name}"></td>
+      <td>${item.name}</td>
+      <td>${extrasText}</td>
+      <td>${item.price.toLocaleString()} USh</td>
+      <td>
+        <button class="qty-btn" onclick="updateQuantity(${index}, -1)">−</button>
+        <span>${item.quantity}</span>
+        <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+      </td>
+      <td>${itemTotal.toLocaleString()} USh</td>
+      <td><button class="delete-btn" onclick="removeItem(${index})">Delete</button></td>
+    `;
+    cartItems.appendChild(row);
+  });
+  cartTotal.textContent = `Total: ${total.toLocaleString()} USh`;
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function updateQuantity(index, change) {
+  cart[index].quantity += change;
+  if(cart[index].quantity <= 0) cart.splice(index, 1);
+  renderCart();
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  renderCart();
+}
+
+function goToConfirmOrder() {
+  if(cart.length === 0){ alert("Your cart is empty!"); return; }
+  window.location.href = "confirm-order";
+}
+
+renderCart();
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurant Menu & Order</title>
+
+<style>
+/* ========================= MENU PAGE CSS ========================= */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #fff5eb;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.menu-section { padding: 60px 0; }
+.menu-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 20px;
+}
+
+.menu-card {
+  width: 270px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.menu-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.menu-info { padding: 20px; }
+.menu-name { font-size: 22px; font-weight: 600; color: #222; }
+.menu-price { font-size: 18px; color: #ff6600; margin: 10px 0; }
+
+.order-btn {
+  background: #ff7f00;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 28px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.order-btn:hover { background: #ff6000; }
+
+@media (max-width: 768px) {
+  .menu-container { flex-direction: column; align-items: center; }
+  .menu-card { width: 85%; }
+}
+
+/* ========================= PRODUCT PAGE CSS ========================= */
+:root{
+  --bg: #fff7f0;
+  --muted: #6b6b6b;
+  --accent: #ff7f00;
+  --panel: #f5efe8;
+  --card-border: #e8e4df;
+}
+
+.product-wrapper{
+  max-width: 1200px;
+  margin: 70px auto;
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  padding: 0 10px;
+}
+
+.left-side {
+  flex: 1.3;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.product-img {
+  width: 100%;
+  height: auto;
+  max-width: 500px;
+  border-radius: 22px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.07);
+  padding: 14px;
+  box-shadow: 0px 12px 25px rgba(0,0,0,0.10),
+              0px 2px 8px rgba(0,0,0,0.06);
+  object-fit: contain;
+}
+
+.right-side{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  padding:10px 5px;
+}
+
+.product-name{
+  font-size:50px;
+  font-weight:600;
+  margin: 0 0 4px;
+  letter-spacing:-0.02em;
+  color:#222;
+}
+
+.product-desc{
+  font-size:19px;
+  line-height:1.55;
+  color:#5a5a5a;
+  margin-bottom:10px;
+  max-width:540px;
+}
+
+.product-price{
+  font-size:34px;
+  font-weight:600;
+  margin-bottom:10px;
+  color:#ff7f00;
+}
+
+hr.divider{
+  border:none;
+  height:1px;
+  background:#ece7e3;
+  margin:28px 0;
+}
+
+.controls-row{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.qty-box{
+  display:flex;
+  align-items:center;
+  background:#fff;
+  border-radius:12px;
+  border:1px solid var(--card-border);
+  padding:10px 20px;
+  min-width:170px;
+  justify-content:center;
+  gap:18px;
+  box-shadow:0 3px 6px rgba(0,0,0,0.04);
+}
+
+.qty-btn{
+  background:transparent;
+  border:none;
+  font-size:22px;
+  width:28px;
+  height:28px;
+  color:var(--muted);
+  cursor:pointer;
+}
+
+#quantity{
+  font-size:20px;
+  font-weight:600;
+}
+
+.order-btn-product{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background-color: #ff7f00;
+  border: 1px solid rgba(0,0,0,0.03);
+  color:#fff;
+  padding:14px 26px;
+  border-radius:12px;
+  font-weight:600;
+  font-size:18px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  cursor:pointer;
+}
+
+.wishlist{
+  width:56px;
+  height:56px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--card-border);
+  background:#fff;
+  font-size:22px;
+  color:#c9bba8;
+  cursor:pointer;
+}
+
+#foodDropdown label{
+  display:block;
+  margin-bottom:2px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+#foodDropdown hr{ margin:5px 0; }
+
+#selectedList{
+  margin-top: 8px;
+  font-size: 15px;
+  color: #333;
+}
+
+#doneBtn{
+  display:block;
+  margin-top: 10px;
+  background: #ff7f00;
+  color: #fff;
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+@media (max-width: 768px){
+  .product-wrapper{
+    flex-direction:column;
+    gap:26px;
+    padding:16px;
+    text-align:left;
+  }
+
+  .product-img{ width:95%; max-height:400px; }
+  .product-name{ font-size:30px; }
+  .product-desc{ font-size:17px; }
+  .product-price{ font-size:32px; }
+}
+
+/* ========================= CONFIRM ORDER CSS ========================= */
+.confirm-order {
+  font-family: "Poppins", sans-serif;
+  background: #fff7f0;
+  color: #222;
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 0 10px;
+}
+
+.confirm-order header {
+  background: #ff7f00;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.confirm-order table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.confirm-order th, .confirm-order td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #e8e4df;
+}
+
+.confirm-order th {
+  background: #ff7f00;
+  color: white;
+}
+
+.confirm-order img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.confirm-order .extras-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 12px;
+  justify-content: center;
+}
+
+.confirm-order .summary-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.confirm-order .summary-actions button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+.confirm-order .continue-btn {
+  background-color: #22c55e; /* green */
+}
+
+.confirm-order .confirm-btn {
+  background-color: #ff7f00;
+  display: none;
+}
+
+.confirm-order .order-method {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.confirm-order .order-method button {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 0px;
+  cursor: pointer;
+  background-color: rgb(116, 232, 116);
+}
+
+.confirm-order .order-method .active {
+  background: #ff7f00;
+  color: white;
+}
+
+.confirm-order .inputs {
+  margin-bottom: 20px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+.confirm-order input {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.confirm-order .autocomplete-items {
+  position: absolute;
+  border: 1px solid #ccc;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  max-height: 150px;
+  overflow-y: auto;
+  border-radius: 0 0 6px 6px;
+}
+
+.confirm-order .autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px){
+  .confirm-order th, .confirm-order td {
+    font-size: 13px;
+    padding: 6px;
+  }
+  .confirm-order .summary-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .confirm-order .summary-actions button {
+    width: 100%;
+  }
+}
+
+/* ========================= HIDE SECTIONS INITIALLY ========================= */
+#productSection, #confirmSection { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ========================= MENU PAGE ========================= -->
+<div id="menuSection">
+  <section style="
+      background:url('https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg') center/cover no-repeat;
+      height:45vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:20px;
+    ">
+      <h1 style="
+        color:white;
+        font-size:40px;
+        font-weight:700;
+        text-shadow:0 3px 8px rgba(0,0,0,0.7);
+      ">
+        Discover Amazing Meals
+      </h1>
+  </section>
+
+  <section class="menu-section">
+    <h2 style="color:#333;">Savor the Best Flavors, Freshly Prepared</h2>
+
+    <div class="menu-container">
+
+      <div class="menu-card">
+        <img src="https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7" alt="Plain G.nuts">
+        <div class="menu-info">
+          <p class="menu-name">Plain G.nuts</p>
+          <p class="menu-price">8000.0 USh</p>
+          <button class="order-btn" onclick="selectProduct({name:'Plain G.nuts', price:8000, img:'https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7'})">Order Now</button>
+        </div>
+      </div>
+
+      <div class="menu-card">
+        <img src="https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7" alt="Beef">
+        <div class="menu-info">
+          <p class="menu-name">Beef</p>
+          <p class="menu-price">10000.0 USh</p>
+          <button class="order-btn" onclick="selectProduct({name:'Beef', price:10000, img:'https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7'})">Order Now</button>
+        </div>
+      </div>
+
+      <div class="menu-card">
+        <img src="https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7" alt="Beef Pilau">
+        <div class="menu-info">
+          <p class="menu-name">Beef Pilau</p>
+          <p class="menu-price">12000.0 USh</p>
+          <button class="order-btn" onclick="selectProduct({name:'Beef Pilau', price:12000, img:'https://address-restaurant.odoo.com/web/image/product.template/52/image_512?unique=3156dc7', desc:'Sweet one for me'})">Order Now</button>
+        </div>
+      </div>
+
+      <div class="menu-card">
+        <img src="https://address-restaurant.odoo.com/web/image/product.template/36/image_512?unique=3156dc7" alt="Chicken Pilau">
+        <div class="menu-info">
+          <p class="menu-name">Chicken Pilau</p>
+          <p class="menu-price">13000.0 USh</p>
+          <button class="order-btn" onclick="selectProduct({name:'Chicken Pilau', price:13000, img:'https://address-restaurant.odoo.com/web/image/product.template/36/image_512?unique=3156dc7', desc:'sweet Matooke best for your family'})">Order Now</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ========================= PRODUCT PAGE ========================= -->
+<div id="productSection">
+  <!-- Paste your product page HTML exactly here -->
+   <div class="product-wrapper">
+
+  <div class="left-side">
+    <img class="product-img" id="productImg" src="" alt="Product Image">
+  </div>
+
+  <div class="right-side">
+    <p class="product-name" id="productName">Product Name</p>
+    <p class="product-desc" id="productDesc">
+      Loading description...
+    </p>
+
+    <div style="display:flex; flex-direction:column; gap:4px; position:relative;">
+      <div style="display:flex; align-items:center; gap:20px;">
+        <p class="product-price" id="productPrice" style="margin-bottom: 30px;">0 USh</p>
+        <button id="addFoodBtn" class="order-btn" style="background:#ffa500; font-size:16px; padding:10px 18px; margin-bottom: 2px;  border-radius: 0;">➕ Add Food</button>
+      </div>
+
+      <div id="selectedList">You have selected: None</div>
+
+      <div id="foodDropdown" style="
+        display: none;
+        position: absolute;
+        top:50px;
+        left:0;
+        background: #fff;
+        border: 1px solid #e8e4df;
+        border-radius: 12px;
+        padding: 10px;
+        width: 250px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        z-index: 10;">
+        <div style="text-align:right; cursor:pointer; font-weight:bold;" id="closeDropdown">X</div>
+        <label><input type="checkbox" id="selectAll"> Select All</label>
+        <hr>
+        <label><input type="checkbox" class="foodOption" value="Yams"> Yams</label>
+        <label><input type="checkbox" class="foodOption" value="Matooke"> Matooke</label>
+        <label><input type="checkbox" class="foodOption" value="Rice"> Rice</label>
+        <label><input type="checkbox" class="foodOption" value="Kalo"> Kalo</label>
+        <label><input type="checkbox" class="foodOption" value="Greens"> Greens</label>
+        <label><input type="checkbox" class="foodOption" value="Cassava"> Cassava</label>
+        <label><input type="checkbox" class="foodOption" value="Sweetpotatoes"> Sweetpotatoes</label>
+        <button id="doneBtn">Done</button>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="controls-row">
+      <div class="qty-box">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <span id="quantity">1</span>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+      </div>
+
+      <button class="order-btn" onclick="orderNow()" style=" border-radius: 0;">
+        🛒 <span>Order</span>
+      </button>
+
+      <div class="wishlist">♡</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ========================= CONFIRM ORDER PAGE ========================= -->
+<div id="confirmSection">
+  <!-- Paste your confirm order page HTML exactly here -->
+   <header>Confirm Order</header>
+
+<div class="container">
+  <!-- Cart Summary -->
+  <div class="summary">
+    <h3>Order Summary</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Extras</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="cartItems"></tbody>
+    </table>
+    <h3>Total: <span id="totalAmount">0</span> USh</h3>
+    <div class="summary-actions">
+      <button class="continue-btn" onclick="window.location.href='menu.html'">Continue Ordering</button>
+      <button class="confirm-btn" id="confirmBtn">Confirm Order</button>
+    </div>
+  </div>
+
+  <!-- Order Method Section -->
+  <div class="order-method">
+    <button id="dineInBtn">Dine In</button>
+    <button id="deliveryBtn">Delivery</button>
+  </div>
+
+  <!-- Dine In Inputs -->
+  <div class="inputs" id="dineInInputs">
+    <input type="text" id="tableNumber" placeholder="Enter Table Number">
+    <input type="text" id="phoneNumber" placeholder="Enter 10-digit Phone Number">
+  </div>
+
+  <!-- Delivery Inputs -->
+  <div class="inputs" id="deliveryInputs">
+    <div style="position:relative;">
+      <input type="text" id="deliveryLocation" placeholder="Enter Delivery Location" autocomplete="off">
+      <div class="autocomplete-items" id="autocomplete-list"></div>
+    </div>
+    <input type="text" id="phoneNumberDelivery" placeholder="Enter 10-digit Phone Number">
+    <div>Delivery Fee: <span id="deliveryFee">0</span> USh</div>
+  </div>
+</div>
+</div>
+
+<script>
+/* ========================= FLOW CONTROL ========================= */
+let selectedProduct = null;
+
+function selectProduct(product){
+  selectedProduct = product;
+  document.getElementById('menuSection').style.display = 'none';
+  document.getElementById('productSection').style.display = 'block';
+  // Store in localStorage for product page JS to use
+  localStorage.setItem('selectedProduct', JSON.stringify(product));
+}
+</script>
+
+<!-- ========================= PLACE ORIGINAL PRODUCT PAGE JS ========================= -->
+<script>
+/* Insert your product page JS here exactly as you wrote it */
+  // Load the selected product from localStorage
+  const product = JSON.parse(localStorage.getItem('selectedProduct')) || {
+    name:'Sample Product',
+    price:5000,
+    img:'https://via.placeholder.com/500',
+    desc:'Default product description.'
+  };
+
+  // Fill in all product details dynamically
+  document.getElementById('productName').innerText = product.name;
+  document.getElementById('productPrice').innerText = product.price + " USh";
+  document.getElementById('productImg').src = product.img;
+  document.getElementById('productDesc').innerText =
+    product.desc && product.desc.trim() !== ""
+      ? product.desc
+      : "Add here Your description.";
+
+  // Quantity controls
+  let qty = 1;
+  function changeQty(val){
+    qty += val;
+    if(qty < 1) qty = 1;
+    document.getElementById('quantity').innerText = qty;
+  }
+
+  // Dropdown logic
+  const addFoodBtn = document.getElementById('addFoodBtn');
+  const foodDropdown = document.getElementById('foodDropdown');
+  const closeDropdown = document.getElementById('closeDropdown');
+  const selectAll = document.getElementById('selectAll');
+  const foodOptions = document.querySelectorAll('.foodOption');
+  const selectedList = document.getElementById('selectedList');
+  const doneBtn = document.getElementById('doneBtn');
+
+  function updateSelectedList(){
+    const selectedFoods = Array.from(document.querySelectorAll('.foodOption:checked')).map(f => f.value);
+    selectedList.innerText = "You have selected: " + (selectedFoods.length ? selectedFoods.join(', ') : 'None');
+  }
+
+  const addFoodSection = document.getElementById('addFoodBtn').parentElement;
+  const allowedFoods = ['Beef Pilau', 'Chicken Pilau']; // customize your allowed food types
+
+  if (!allowedFoods.includes(product.name)) {
+    addFoodSection.style.display = 'none'; // hide Add Food button + dropdown
+  }
+
+  addFoodBtn.addEventListener('click', () => {
+    foodDropdown.style.display = 'block';
+    updateSelectedList();
+  });
+
+  closeDropdown.addEventListener('click', () => foodDropdown.style.display = 'none');
+  doneBtn.addEventListener('click', () => foodDropdown.style.display = 'none');
+
+  selectAll.addEventListener('change', () => {
+    foodOptions.forEach(opt => opt.checked = selectAll.checked);
+    updateSelectedList();
+  });
+
+  foodOptions.forEach(opt => {
+    opt.addEventListener('change', updateSelectedList);
+  });
+
+  document.addEventListener('click', function(e){
+    if(!foodDropdown.contains(e.target) && e.target !== addFoodBtn){
+      foodDropdown.style.display = 'none';
+    }
+  });
+
+  // Function to add product to cart and redirect to cart page
+  function orderNow(){
+    const selectedFoods = Array.from(document.querySelectorAll('.foodOption:checked')).map(f => f.value);
+
+    const cartItem = {
+      id: product.name, // using name as unique id
+      name: product.name,
+      price: product.price,
+      image: product.img,
+      quantity: qty,
+      extras: selectedFoods
+    };
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const existingItem = cart.find(item => item.id === cartItem.id);
+    if(existingItem){
+      existingItem.quantity += cartItem.quantity;
+      existingItem.extras = cartItem.extras; // update extras if changed
+    } else {
+      cart.push(cartItem);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // Redirect to cart summary page
+    window.location.href = "cart.html";
+  }
+</script>
+
+<!-- ========================= PLACE ORIGINAL CONFIRM ORDER PAGE JS ========================= -->
+<script>
+/* Insert your confirm order page JS here exactly as you wrote it */
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const cartItems = document.getElementById("cartItems");
+const totalAmountEl = document.getElementById("totalAmount");
+const dineInBtn = document.getElementById("dineInBtn");
+const deliveryBtn = document.getElementById("deliveryBtn");
+const dineInInputs = document.getElementById("dineInInputs");
+const deliveryInputs = document.getElementById("deliveryInputs");
+const confirmBtn = document.getElementById("confirmBtn");
+const tableInput = document.getElementById("tableNumber");
+const phoneInput = document.getElementById("phoneNumber");
+const deliveryLocationInput = document.getElementById("deliveryLocation");
+const phoneDeliveryInput = document.getElementById("phoneNumberDelivery");
+const deliveryFeeEl = document.getElementById("deliveryFee");
+const autocompleteList = document.getElementById("autocomplete-list");
+
+let deliveryFee = 0;
+
+const deliveryFees = {
+  "Kagote": 3000,
+  "Boma": 2000,
+  "Bukwali, Near Raca Resort Hotel": 2000,
+  "Boma, Nyaika Avenue-ASEI Office": 2000,
+  "Nyabukala": 3000,
+  "Kisenyi": 2000,
+  "VOT": 2500,
+  "Njara": 3000,
+  "Kitumba": 3000,
+  "Karogota": 4000,
+  "Kachwamba": 4000,
+  "Kabundaire": 2000,
+  "KRC-Boma": 2000,
+  "KRC-Town": 2000,
+  "Rwentuha": 3000,
+  "Kyarusozi": 3000,
+  "Kicwamba": 4000,
+  "Nyakabande": 3000,
+  "Mukubo": 2000,
+  "Near Mountains of the Moon Hotel": 2000,
+  "Nyakasura": 4000
+};
+
+dineInBtn.addEventListener("click", () => {
+  dineInBtn.classList.add("active");
+  deliveryBtn.classList.remove("active");
+  dineInInputs.style.display = "flex";
+  deliveryInputs.style.display = "none";
+  deliveryFee = 0;
+  renderCart();
+  checkInputs();
+});
+
+deliveryBtn.addEventListener("click", () => {
+  deliveryBtn.classList.add("active");
+  dineInBtn.classList.remove("active");
+  deliveryInputs.style.display = "flex";
+  dineInInputs.style.display = "none";
+  updateDeliveryFee();
+});
+
+function renderCart() {
+  cartItems.innerHTML = "";
+  let subtotal = 0;
+  cart.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    subtotal += itemTotal;
+    const extrasText = item.extras && item.extras.length
+      ? `<div class="extras-list">${item.extras.join(", ")}</div>`
+      : "None";
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${item.name}</td>
+      <td>${extrasText}</td>
+      <td>${item.price.toLocaleString()} USh</td>
+      <td>${item.quantity}</td>
+      <td>${itemTotal.toLocaleString()} USh</td>
+    `;
+    cartItems.appendChild(row);
+  });
+  totalAmountEl.textContent = (subtotal + deliveryFee).toLocaleString();
+}
+
+function updateDeliveryFee() {
+  const location = deliveryLocationInput.value.trim();
+  deliveryFee = deliveryFees[location] || 0;
+  deliveryFeeEl.textContent = deliveryFee.toLocaleString();
+  renderCart();
+  checkInputs();
+}
+
+function checkInputs() {
+  let show = false;
+  if (dineInBtn.classList.contains("active") &&
+      tableInput.value.trim() !== "" &&
+      /^\d{10}$/.test(phoneInput.value.trim())) {
+    show = true;
+  }
+  if (deliveryBtn.classList.contains("active") &&
+      deliveryLocationInput.value.trim() !== "" &&
+      /^\d{10}$/.test(phoneDeliveryInput.value.trim())) {
+    show = true;
+  }
+  confirmBtn.style.display = show ? "inline-block" : "none";
+}
+
+tableInput.addEventListener("input", checkInputs);
+phoneInput.addEventListener("input", checkInputs);
+deliveryLocationInput.addEventListener("input", updateDeliveryFee);
+phoneDeliveryInput.addEventListener("input", checkInputs);
+
+function autocomplete(inp, arr) {
+  inp.addEventListener("input", function() {
+    let val = this.value;
+    autocompleteList.innerHTML = "";
+    if (!val) return false;
+    const matches = arr.filter(item => item.toLowerCase().includes(val.toLowerCase()));
+    matches.forEach(match => {
+      const div = document.createElement("div");
+      div.innerHTML = "<strong>" + match.substr(0, val.length) + "</strong>" + match.substr(val.length);
+      div.addEventListener("click", function() {
+        inp.value = match;
+        autocompleteList.innerHTML = "";
+        updateDeliveryFee();
+      });
+      autocompleteList.appendChild(div);
+    });
+  });
+}
+
+autocomplete(deliveryLocationInput, Object.keys(deliveryFees));
+
+confirmBtn.addEventListener("click", () => {
+  let orderDetails = "Order Receipt:\n\n";
+  let subtotal = 0;
+  cart.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    subtotal += itemTotal;
+    const extras = item.extras && item.extras.length ? item.extras.join(", ") : "None";
+    orderDetails += `${item.name} (${extras}) x ${item.quantity} = ${itemTotal.toLocaleString()} USh\n`;
+  });
+  orderDetails += `\nDelivery Fee: ${deliveryFee.toLocaleString()} USh`;
+  orderDetails += `\nTotal: ${(subtotal + deliveryFee).toLocaleString()} USh`;
+
+  navigator.clipboard.writeText(orderDetails).then(() => {
+    alert("Order copied to clipboard!\n\n" + orderDetails);
+  });
+});
+
+renderCart();
+</script>
+
+<script src="cartWidget.js"></script>
+<script>
+    
+</script>
+
+</body>
+</html>

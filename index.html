@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurant Menu</title>
+
+<style>
+:root {
+  --accent: #ff9900;
+  --dark: #111;
+  --light: #fff;
+  --gray: #e3e3e3;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  color: var(--dark);
+  background-color: #fff;
+  /* ✅ Orange zigzag lines background */
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 25px,
+    rgba(255, 153, 0, 0.2) 25px,
+    rgba(255, 153, 0, 0.2) 50px
+  );
+  background-attachment: fixed;
+}
+
+header {
+  background: var(--accent);
+  color: #fff;
+  padding: 40px 20px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* ✅ HERO SECTION with Cards */
+.hero-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  padding: 40px 20px;
+}
+
+.hero-card {
+  width: 300px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hero-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.hero-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.hero-content {
+  padding: 15px 20px 25px;
+}
+
+.hero-content h3 {
+  font-family: "Brush Script MT", cursive;
+  font-size: 1.8rem;
+  color: var(--accent);
+  margin: 10px 0 5px;
+}
+
+.hero-content p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.hero-content button {
+  background: linear-gradient(135deg, #ff7f00, #ff5500);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  transition: opacity 0.3s ease;
+}
+.hero-content button:hover {
+  opacity: 0.85;
+}
+
+/* ✅ MENU SECTION */
+.menu-container {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  position: relative;
+  z-index: 3;
+}
+.menu-column {
+  background: #1c1c1c;
+  padding: 15px;
+  border-radius: 10px;
+  border-top: 5px solid var(--accent);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.menu-column h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1.3rem;
+  color: var(--accent);
+}
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed #555;
+  padding: 4px 0;
+  font-size: 15px;
+}
+
+/* ✅ Order Now button for columns */
+.menu-btn {
+  margin-top: 15px;
+  background: linear-gradient(135deg, #ff7f00, #ff5500);
+  border: none;
+  padding: 10px 0;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  transition: opacity 0.3s ease;
+  width: 100%;
+}
+.menu-btn:hover {
+  opacity: 0.85;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .menu-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .hero-card {
+    width: 90%;
+  }
+}
+@media (min-width: 769px) and (max-width: 1100px) {
+  .menu-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>DELICIOUS FOOD MENU</header>
+
+<!-- ✅ MODERN HERO CARDS -->
+<section class="hero-section">
+  <div class="hero-card">
+    <img src="https://address-restaurant.odoo.com/web/image/product.template/29/image_512?unique=3156dc7" alt="">
+    <div class="hero-content">
+      <h3>Fresh & Healthy Vegetables</h3>
+      <p>Natural • Organic • Juicy • Local</p>
+      <button onclick="orderNow('Fresh Vegetables')">Order Now</button>
+    </div>
+  </div>
+
+  <div class="hero-card">
+    <img src="https://address-restaurant.odoo.com/web/image/product.template/32/image_512?unique=3156dc7" alt="">
+    <div class="hero-content">
+      <h3>Delicious Rice Combo</h3>
+      <p>Spicy • Tasty • Balanced • Filling</p>
+      <button onclick="orderNow('Rice Combo')">Order Now</button>
+    </div>
+  </div>
+
+  <div class="hero-card">
+    <img src="https://address-restaurant.odoo.com/web/image/product.template/33/image_512?unique=3156dc7" alt="">
+    <div class="hero-content">
+      <h3>Asian Noodles</h3>
+      <p>Hot • Sweet • Savory • Perfect</p>
+      <button onclick="orderNow('Asian Noodles')">Order Now</button>
+    </div>
+  </div>
+
+  <div class="hero-card">
+    <img src="https://address-restaurant.odoo.com/web/image/product.template/38/image_512?unique=3156dc7" alt="">
+    <div class="hero-content">
+      <h3>Cheese Pizza</h3>
+      <p>Melty • Crispy • Cheesy • Golden</p>
+      <button onclick="orderNow('Cheese Pizza')">Order Now</button>
+    </div>
+  </div>
+
+  <div class="hero-card">
+    <img src="https://source.unsplash.com/800x400/?fries" alt="">
+    <div class="hero-content">
+      <h3>French Fries</h3>
+      <p>Crunchy • Golden • Salty • Fresh</p>
+      <button onclick="orderNow('French Fries')">Order Now</button>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ MENU SECTION -->
+<div class="menu-container">
+
+  <!-- MAIN COURSE -->
+  <div class="menu-column">
+    <div>
+      <h2>Main Course</h2>
+      <div class="menu-item"><span>Grilled Chicken</span><span>$6.99</span></div>
+      <div class="menu-item"><span>Beef Curry</span><span>$7.99</span></div>
+      <div class="menu-item"><span>Fish Fillet</span><span>$5.99</span></div>
+      <div class="menu-item"><span>Chicken Tikka</span><span>$8.50</span></div>
+      <div class="menu-item"><span>Goat Stew</span><span>$9.75</span></div>
+      <div class="menu-item"><span>BBQ Pork</span><span>$9.50</span></div>
+      <div class="menu-item"><span>Spaghetti</span><span>$4.99</span></div>
+    </div>
+    <button class="menu-btn" onclick="orderNow('Main Course')">Order Now</button>
+  </div>
+
+  <!-- SIDE DISHES -->
+  <div class="menu-column">
+    <div>
+      <h2>Side Dishes</h2>
+      <div class="menu-item"><span>Mashed Potatoes</span><span>$2.99</span></div>
+      <div class="menu-item"><span>Garden Salad</span><span>$3.50</span></div>
+      <div class="menu-item"><span>Fried Rice</span><span>$2.50</span></div>
+      <div class="menu-item"><span>Steamed Veggies</span><span>$3.20</span></div>
+      <div class="menu-item"><span>Boiled Cassava</span><span>$2.30</span></div>
+      <div class="menu-item"><span>Chapati</span><span>$1.25</span></div>
+      <div class="menu-item"><span>Irish Potatoes</span><span>$2.99</span></div>
+    </div>
+    <button class="menu-btn" onclick="orderNow('Side Dishes')">Order Now</button>
+  </div>
+
+  <!-- SNACKS -->
+  <div class="menu-column">
+    <div>
+      <h2>Snacks</h2>
+      <div class="menu-item"><span>Fries</span><span>$2.99</span></div>
+      <div class="menu-item"><span>Samosa</span><span>$1.50</span></div>
+      <div class="menu-item"><span>Beef Rolls</span><span>$2.50</span></div>
+      <div class="menu-item"><span>Chicken Wings</span><span>$4.25</span></div>
+      <div class="menu-item"><span>Nachos</span><span>$3.75</span></div>
+      <div class="menu-item"><span>Popcorn</span><span>$1.99</span></div>
+      <div class="menu-item"><span>Onion Rings</span><span>$2.80</span></div>
+    </div>
+    <button class="menu-btn" onclick="orderNow('Snacks')">Order Now</button>
+  </div>
+
+  <!-- BREAKFAST -->
+  <div class="menu-column">
+    <div>
+      <h2>Breakfast</h2>
+      <div class="menu-item"><span>Pancakes</span><span>$3.99</span></div>
+      <div class="menu-item"><span>Omelette</span><span>$2.99</span></div>
+      <div class="menu-item"><span>Tea & Bread</span><span>$1.75</span></div>
+      <div class="menu-item"><span>French Toast</span><span>$3.25</span></div>
+      <div class="menu-item"><span>Fried Eggs</span><span>$2.20</span></div>
+      <div class="menu-item"><span>Rolex</span><span>$1.50</span></div>
+      <div class="menu-item"><span>Porridge</span><span>$1.50</span></div>
+    </div>
+    <button class="menu-btn" onclick="orderNow('Breakfast')">Order Now</button>
+  </div>
+
+  <!-- DRINKS -->
+  <div class="menu-column">
+    <div>
+      <h2>Drinks</h2>
+      <div class="menu-item"><span>Water</span><span>$1.00</span></div>
+      <div class="menu-item"><span>Soda</span><span>$1.25</span></div>
+      <div class="menu-item"><span>Fresh Juice</span><span>$2.50</span></div>
+      <div class="menu-item"><span>Milkshake</span><span>$3.75</span></div>
+      <div class="menu-item"><span>Tea</span><span>$1.30</span></div>
+      <div class="menu-item"><span>Coffee</span><span>$1.70</span></div>
+      <div class="menu-item"><span>Smoothie</span><span>$3.50</span></div>
+    </div>
+    <button class="menu-btn" onclick="orderNow('Drinks')">Order Now</button>
+  </div>
+
+</div>
+
+<script>
+function orderNow(item) {
+  const phone = "+256700000000"; // Change this number
+  window.open(`https://wa.me/${phone}?text=I want to order: ${item}`);
+}
+</script>
+
+</body>
+</html>

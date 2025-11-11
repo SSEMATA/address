@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirm Order</title>
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: #fff7f0;
+    margin: 0;
+    color: #222;
+  }
+  header {
+    background: #ff7f00;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 10px;
+  }
+
+  /* Cart Summary */
+  .summary {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+  }
+
+  th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #e8e4df;
+  }
+
+  th {
+    background: #ff7f00;
+    color: white;
+  }
+
+  img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .extras-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    font-size: 12px;
+    justify-content: center;
+  }
+
+  /* Buttons under Cart Summary */
+  .summary-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+  }
+
+  .summary-actions button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+  }
+
+  .continue-btn {
+    background-color: #22c55e; /* green */
+  }
+
+  .confirm-btn {
+    background-color: #ff7f00;
+    display: none;
+  }
+
+  /* Order Method Section */
+  .order-method {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .order-method button {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    background-color: rgb(116, 232, 116);
+  }
+  .order-method .active {
+    background: #ff7f00;
+    color: white;
+  }
+
+  .inputs {
+    margin-bottom: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+  }
+
+  input {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+
+  /* Autocomplete dropdown */
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #ccc;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    max-height: 150px;
+    overflow-y: auto;
+    border-radius: 0 0 6px 6px;
+  }
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+  }
+  .autocomplete-items div:hover {
+    background: #ffefde;
+  }
+
+  @media (max-width: 768px){
+    th, td {
+      font-size: 13px;
+      padding: 6px;
+    }
+    .summary-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .summary-actions button {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>Confirm Order</header>
+
+<div class="container">
+  <!-- Cart Summary -->
+  <div class="summary">
+    <h3>Order Summary</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Extras</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="cartItems"></tbody>
+    </table>
+    <h3>Total: <span id="totalAmount">0</span> USh</h3>
+    <div class="summary-actions">
+      <button class="continue-btn" onclick="window.location.href='menu.html'">Continue Ordering</button>
+      <button class="confirm-btn" id="confirmBtn">Confirm Order</button>
+    </div>
+  </div>
+
+  <!-- Order Method Section -->
+  <div class="order-method">
+    <button id="dineInBtn">Dine In</button>
+    <button id="deliveryBtn">Delivery</button>
+  </div>
+
+  <!-- Dine In Inputs -->
+  <div class="inputs" id="dineInInputs">
+    <input type="text" id="tableNumber" placeholder="Enter Table Number">
+    <input type="text" id="phoneNumber" placeholder="Enter 10-digit Phone Number">
+  </div>
+
+  <!-- Delivery Inputs -->
+  <div class="inputs" id="deliveryInputs">
+    <div style="position:relative;">
+      <input type="text" id="deliveryLocation" placeholder="Enter Delivery Location" autocomplete="off">
+      <div class="autocomplete-items" id="autocomplete-list"></div>
+    </div>
+    <input type="text" id="phoneNumberDelivery" placeholder="Enter 10-digit Phone Number">
+    <div>Delivery Fee: <span id="deliveryFee">0</span> USh</div>
+  </div>
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const cartItems = document.getElementById("cartItems");
+const totalAmountEl = document.getElementById("totalAmount");
+const dineInBtn = document.getElementById("dineInBtn");
+const deliveryBtn = document.getElementById("deliveryBtn");
+const dineInInputs = document.getElementById("dineInInputs");
+const deliveryInputs = document.getElementById("deliveryInputs");
+const confirmBtn = document.getElementById("confirmBtn");
+const tableInput = document.getElementById("tableNumber");
+const phoneInput = document.getElementById("phoneNumber");
+const deliveryLocationInput = document.getElementById("deliveryLocation");
+const phoneDeliveryInput = document.getElementById("phoneNumberDelivery");
+const deliveryFeeEl = document.getElementById("deliveryFee");
+const autocompleteList = document.getElementById("autocomplete-list");
+
+let deliveryFee = 0;
+
+const deliveryFees = {
+  "Kagote": 3000,
+  "Boma": 2000,
+  "Bukwali, Near Raca Resort Hotel": 2000,
+  "Boma, Nyaika Avenue-ASEI Office": 2000,
+  "Nyabukala": 3000,
+  "Kisenyi": 2000,
+  "VOT": 2500,
+  "Njara": 3000,
+  "Kitumba": 3000,
+  "Karogota": 4000,
+  "Kachwamba": 4000,
+  "Kabundaire": 2000,
+  "KRC-Boma": 2000,
+  "KRC-Town": 2000,
+  "Rwentuha": 3000,
+  "Kyarusozi": 3000,
+  "Kicwamba": 4000,
+  "Nyakabande": 3000,
+  "Mukubo": 2000,
+  "Near Mountains of the Moon Hotel": 2000,
+  "Nyakasura": 4000
+};
+
+dineInBtn.addEventListener("click", () => {
+  dineInBtn.classList.add("active");
+  deliveryBtn.classList.remove("active");
+  dineInInputs.style.display = "flex";
+  deliveryInputs.style.display = "none";
+  deliveryFee = 0;
+  renderCart();
+  checkInputs();
+});
+
+deliveryBtn.addEventListener("click", () => {
+  deliveryBtn.classList.add("active");
+  dineInBtn.classList.remove("active");
+  deliveryInputs.style.display = "flex";
+  dineInInputs.style.display = "none";
+  updateDeliveryFee();
+});
+
+function renderCart() {
+  cartItems.innerHTML = "";
+  let subtotal = 0;
+  cart.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    subtotal += itemTotal;
+    const extrasText = item.extras && item.extras.length
+      ? `<div class="extras-list">${item.extras.join(", ")}</div>`
+      : "None";
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${item.name}</td>
+      <td>${extrasText}</td>
+      <td>${item.price.toLocaleString()} USh</td>
+      <td>${item.quantity}</td>
+      <td>${itemTotal.toLocaleString()} USh</td>
+    `;
+    cartItems.appendChild(row);
+  });
+  totalAmountEl.textContent = (subtotal + deliveryFee).toLocaleString();
+}
+
+function updateDeliveryFee() {
+  const location = deliveryLocationInput.value.trim();
+  deliveryFee = deliveryFees[location] || 0;
+  deliveryFeeEl.textContent = deliveryFee.toLocaleString();
+  renderCart();
+  checkInputs();
+}
+
+function checkInputs() {
+  let show = false;
+  if (dineInBtn.classList.contains("active") &&
+      tableInput.value.trim() !== "" &&
+      /^\d{10}$/.test(phoneInput.value.trim())) {
+    show = true;
+  }
+  if (deliveryBtn.classList.contains("active") &&
+      deliveryLocationInput.value.trim() !== "" &&
+      /^\d{10}$/.test(phoneDeliveryInput.value.trim())) {
+    show = true;
+  }
+  confirmBtn.style.display = show ? "inline-block" : "none";
+}
+
+tableInput.addEventListener("input", checkInputs);
+phoneInput.addEventListener("input", checkInputs);
+deliveryLocationInput.addEventListener("input", updateDeliveryFee);
+phoneDeliveryInput.addEventListener("input", checkInputs);
+
+function autocomplete(inp, arr) {
+  inp.addEventListener("input", function() {
+    let val = this.value;
+    autocompleteList.innerHTML = "";
+    if (!val) return false;
+    const matches = arr.filter(item => item.toLowerCase().includes(val.toLowerCase()));
+    matches.forEach(match => {
+      const div = document.createElement("div");
+      div.innerHTML = "<strong>" + match.substr(0, val.length) + "</strong>" + match.substr(val.length);
+      div.addEventListener("click", function() {
+        inp.value = match;
+        autocompleteList.innerHTML = "";
+        updateDeliveryFee();
+      });
+      autocompleteList.appendChild(div);
+    });
+  });
+}
+
+autocomplete(deliveryLocationInput, Object.keys(deliveryFees));
+
+confirmBtn.addEventListener("click", () => {
+  let orderDetails = "Order Receipt:\n\n";
+  let subtotal = 0;
+  cart.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    subtotal += itemTotal;
+    const extras = item.extras && item.extras.length ? item.extras.join(", ") : "None";
+    orderDetails += `${item.name} (${extras}) x ${item.quantity} = ${itemTotal.toLocaleString()} USh\n`;
+  });
+  orderDetails += `\nDelivery Fee: ${deliveryFee.toLocaleString()} USh`;
+  orderDetails += `\nTotal: ${(subtotal + deliveryFee).toLocaleString()} USh`;
+
+  navigator.clipboard.writeText(orderDetails).then(() => {
+    alert("Order copied to clipboard!\n\n" + orderDetails);
+  });
+});
+
+renderCart();
+</script>
+<script src="cartWidget.js"></script>
+
+</body>
+</html>

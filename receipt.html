@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Receipt Display</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      color: #000;
+    }
+
+    .receipt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .receipt-header .left {
+      text-align: left;
+      line-height: 1.5;
+    }
+
+    .receipt-header .right {
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    .receipt-number {
+      font-weight: bold;
+      font-size: 18px;
+      text-align: left;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+    }
+
+    th, td {
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .note {
+      font-size: 14px;
+      margin-top: 10px;
+      text-align: center;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="receipt-header">
+    <div class="left">
+      <strong>Address Restaurant.</strong><br>
+      Located along Rukiidi Street
+    </div>
+    <div class="right">
+      <strong>Receipt No:</strong> #<br>
+      <strong>Customers No:</strong>
+    </div>
+  </div>
+
+  <div class="receipt-number">
+    0200900593
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Particulars</th>
+        <th>Quantity</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Beef</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Extracts</td>
+        <td>0</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Delivery Fee</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>Total</strong></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <p><strong>Note:</strong> This order shall be delivered…………/Dine In order. Pay on delivery.</p>
+    <p>Shall take less than 20 minutes (for Delivery) / less than 5 minutes for Dine In Order.</p>
+  </div>
+
+</body>
+</html>
